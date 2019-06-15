@@ -66,13 +66,13 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
 
     /* Generates favicons */
-    /* new FaviconsWebpackPlugin({
+    new FaviconsWebpackPlugin({
       logo: 'assets/images/icon.png',
       // don't rebuild the favicons until those hashes change
       persistentCache: true,
       // Inject the html into the html-webpack-plugin
       inject: true,
-    }), */
+    }),
   ],
 
   module: {

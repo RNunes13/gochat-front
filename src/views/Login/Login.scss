@@ -1,0 +1,82 @@
+
+@import '../../assets/scss/settings/_config-base';
+
+@keyframes grow {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideDown {
+  0% { transform: translateY(-50%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.gc-login {
+  @include rem(padding, 20px);
+  @include flex-centered;
+  width: 100vw;
+  min-height: 100%;
+  overflow-y: auto;
+
+  &__wrap {
+    @include rem(padding, 30px 40px);
+    @include rem(border-radius, 10px);
+    @include scrollbar(5px, $color-secondary);
+    background-color: $color-white;
+    border: 1px solid $color-light-grey;
+    transition: padding $transition-duration $transition-function;
+
+    @include mq('sm') {
+      @include rem(width, 500px);
+    }
+    @include mq('sm', max) {
+      @include rem(padding, 20px);
+      width: 100%;
+    }
+  }
+
+  &__heading {
+    @include rem(margin-bottom, 30px);
+
+    &--icon {
+      @include rem(margin, 0 auto 10px);
+      text-align: center;
+      opacity: 0;
+      transform: scale(0);
+      animation: grow 500ms linear forwards 500ms;
+      
+      img {
+        @include rem(max-width, 90px);
+        transition: max-width $transition-duration $transition-function;
+  
+        @include mq('sm', max) {
+          @include rem(max-width, 70px);
+        }
+      }
+    }
+  
+    &--name {
+      @include rem(margin, 0 auto);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(0);
+      animation: slideDown 1s linear forwards 1.3s;
+  
+      img {
+        @include rem(max-height, 20px);
+        transition: max-height $transition-duration $transition-function;
+
+        @include mq('sm', max) {
+          @include rem(max-height, 18px);
+        }
+      }
+    }
+  }
+
+  &__form {
+    .submit {
+      @include rem(margin-top, 15px);
+      text-align: center;
+    }
+  }
+}
