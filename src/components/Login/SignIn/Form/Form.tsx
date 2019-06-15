@@ -1,10 +1,13 @@
 
 import * as React from 'react';
 import * as Yup from 'yup';
+import qs from 'querystring';
 import Auth from '../../../../services/auth';
 import { User } from '../../../../models';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Input, Button } from '../../../index';
+import { HandlerError } from '../../../../utils';
+import { openSnackbar } from '../../../Notifier/Notifier';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 // Material UI
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -56,12 +59,25 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({ updateUser, histor
   const onSubmit = (values: FormType, actions: FormikActions<FormType>) => {
     Auth.login(values.username, values.password)
       .then((user: User) => {
-        console.log('user', user);
         updateUser(user);
-        history.push('/');
+        
+        openSnackbar({
+          message: 'Login aceito',
+          variant: 'success',
+          delay: 2000,
+        });
+
+        const query = history.location.search.replace('?', '');
+        const destiny = qs.parse(query).from as string || '/';
+
+        history.push(destiny);
       })
       .catch((err) => {
-        console.error(err);
+        openSnackbar({
+          message: HandlerError.getErrorMessage(err),
+          variant: 'error',
+          delay: 10000,
+        });
       })
       .finally(() => actions.setSubmitting(false));
   };

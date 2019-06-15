@@ -1,6 +1,6 @@
 
+import HttpClient from './httpClient';
 import { User } from '../models';
-import { HttpClient } from '../utils';
 import { USER_TOKEN } from '../models/typings';
 
 export default class Auth {
@@ -34,16 +34,14 @@ export default class Auth {
   public static checkUserLogged(callback: (user: User | null) => void) {
     this.http.get('/checkUser')
       .then(({ data }) => {
-        if (!data.success) {
-          callback(null);
-          return;
-        }
+        if (!data.success) throw data.error
 
         this.currentUser = data.data;
         callback(this.currentUser);
       })
       .catch((err) => {
-        console.error(err);
+        console.error(err.message ? err.message : err);
+        sessionStorage.removeItem(USER_TOKEN);
         callback(null);
       });
   }

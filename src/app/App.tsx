@@ -4,7 +4,7 @@ import theme from '../config/theme';
 import Auth from '../services/auth';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { MainRouter } from './Routes';
-import { Loader } from '../components';
+import { Loader, Notifier } from '../components';
 import { BrowserRouter as Router} from 'react-router-dom';
 import './app.scss';
 
@@ -39,9 +39,12 @@ class App extends React.Component<AppProps> {
       <MuiThemeProvider theme={ theme }>
         {
           !global.loadingData ?
-          <Router>
-            <MainRouter />
-          </Router> :
+          <React.Fragment>
+            <Notifier />
+            <Router>
+              <MainRouter />
+            </Router>
+          </React.Fragment> :
           <Loader loading />
         }
       </MuiThemeProvider>
