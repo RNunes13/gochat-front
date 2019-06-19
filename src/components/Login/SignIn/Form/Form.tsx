@@ -30,9 +30,8 @@ import {
   FieldProps,
 } from 'formik';
 
-interface LoginFormProps {
+interface LoginFormProps extends RouteComponentProps {
   updateUser: typeof AuthActions.updateUser;
-  history: any;
 }
 
 type FormType = {

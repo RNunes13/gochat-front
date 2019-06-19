@@ -31,6 +31,25 @@ export default class Auth {
     });
   }
 
+  public static signUp(name: string, username: string, email: string, password: string) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userData = await this.http.post('/users', { name, username, email, password });
+
+        const { data } = userData;
+
+        if (!data.success)
+          throw data.error;
+
+        const user = await this.login(username, password);
+
+        resolve(user);
+      } catch (exception) {
+        reject(exception);
+      }
+    });
+  }
+
   public static checkUserLogged(callback: (user: User | null) => void) {
     this.http.get('/checkUser')
       .then(({ data }) => {

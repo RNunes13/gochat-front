@@ -13,7 +13,7 @@ const isProd = process.env.NODE_ENV === 'production';
 module.exports = {
   context: path.join(__dirname, 'src'),
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  devtool: !isProd ? 'eval' : '', 
+  devtool: !isProd ? 'inline-source-map' : '', 
   node: {
     fs: "empty"
   },

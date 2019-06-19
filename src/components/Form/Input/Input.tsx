@@ -11,21 +11,28 @@ interface InputProps extends OutlinedTextFieldProps {
 
 const Input: React.FunctionComponent<InputProps> = ({
   error,
+  onBlur,
   touched,
-  fieldProps,
   rows = 4,
-  margin = 'normal',
+  onChange,
+  fieldProps,
   fullWidth = true,
+  margin = 'normal',
   ...rest
 }) => {
+  const { field } = fieldProps;
+
   return (
     <TextField
       rows={ rows }
       margin={ margin }
+      name={ field.name }
+      value={ field.value }
       fullWidth={ fullWidth }
       error={ Boolean(error) && touched }
+      onBlur={ onBlur ? onBlur : field.onBlur }
+      onChange={ onChange ? onChange : field.onChange }
       { ...rest }
-      { ...fieldProps.field }
     />
   );
 };
