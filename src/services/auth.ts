@@ -64,4 +64,10 @@ export default class Auth {
         callback(null);
       });
   }
+
+  public static logout(callback: (successful: boolean) => void) {
+    sessionStorage.removeItem(USER_TOKEN);
+    this.currentUser = null;
+    callback(!sessionStorage.getItem(USER_TOKEN));
+  }
 }

@@ -7,9 +7,9 @@ export interface AuthState {
   user: User | null;
 }
 
-interface UpdatePageAction {
+interface UpdateUserAction {
   type: typeof UPDATE_USER,
   payload: User | null,
 }
 
-export type AuthActionTypes = UpdatePageAction;
+export type AuthActionTypes = UpdateUserAction;
