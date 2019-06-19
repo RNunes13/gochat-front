@@ -13,7 +13,7 @@ const isProd = process.env.NODE_ENV === 'production';
 module.exports = {
   context: path.join(__dirname, 'src'),
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  devtool: !isProd ? 'eval' : '', 
+  devtool: !isProd ? 'inline-source-map' : '', 
   node: {
     fs: "empty"
   },
@@ -66,13 +66,13 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
 
     /* Generates favicons */
-    /* new FaviconsWebpackPlugin({
+    new FaviconsWebpackPlugin({
       logo: 'assets/images/icon.png',
       // don't rebuild the favicons until those hashes change
       persistentCache: true,
       // Inject the html into the html-webpack-plugin
       inject: true,
-    }), */
+    }),
   ],
 
   module: {
