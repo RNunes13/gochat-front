@@ -7,7 +7,7 @@ import {
 } from './types';
 
 const initialState: GlobalState = {
-  page: '',
+  page: 'GoChat',
   loadingData: true,
 };
 
