@@ -1,2 +1,31 @@
 
 @import '../assets/scss/_config-base';
+
+.app {
+  //
+}
+
+.gc-section {
+  @include scrollbar(8px, $color-secondary);
+  @include rem(padding-top, 30px);
+  @include rem(padding-bottom, 30px);
+  overflow-y: auto;
+
+  @include breakpoint(min-width, 600px) {
+    height: calc(100vh - #{$navbar-height-desktop});
+    margin-top: $navbar-height-desktop;
+  }
+
+  @include breakpoint(max-width, 599px) {
+    @include rem(padding-top, 20px);
+    @include rem(padding-bottom, 20px);
+    height: calc(100vh - #{$navbar-height-mobile});
+    margin-top: $navbar-height-mobile;
+  }
+
+  &.has--floating-button {
+    @include mq('sm', max) {
+      @include rem(padding-bottom, 60px);
+    }
+  }
+}

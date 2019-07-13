@@ -29,6 +29,12 @@ export default class Login extends React.Component<LoginProps, LoginState> {
     const destiny = qs.parse(query).from as string || '/';
 
     if (Auth.getCurrentUser()) this.props.history.push(destiny);
+
+    window.document.body.classList.add('is--login-view');
+  }
+
+  componentWillUnmount() {
+    window.document.body.classList.remove('is--login-view');
   }
 
   handleSignUp() {
