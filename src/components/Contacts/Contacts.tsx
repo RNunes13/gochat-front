@@ -2,6 +2,7 @@
 import * as React from 'react';
 import ContactSearch from './Search/Search';
 import ProgressiveImage from 'react-progressive-image';
+import ContactPlaceholder from './Placeholder/Placeholder';
 import ContactNavigation, { TabsType } from './Navigation/Navigation';
 import { RemoveSpecialCharacters } from '../../utils';
 import { Contact } from '../../models';
@@ -35,12 +36,6 @@ const Contacts: React.FunctionComponent<IContactsProps> = ({ isOpen, contact, ha
   const accepted = contacts.filter(c => c.status === 'accept');
   const pending = contacts.filter(c => c.status === 'pending');
 
-  const renderLoader = (
-    <div style={{ textAlign: 'center' }}>
-      <CircularProgress size={ 30 } />
-    </div>
-  );
-
   const renderAvatar = (contact: Contact) => {
     return (
       <ProgressiveImage 
@@ -48,7 +43,7 @@ const Contacts: React.FunctionComponent<IContactsProps> = ({ isOpen, contact, ha
         placeholder=""
       >
         {(src: string, loading: boolean) => {
-          if (loading) return <CircularProgress color="inherit" />;
+          if (loading) return <CircularProgress color="primary" size={ 35 } style={{ marginRight: 10 }} />;
           
           return <Avatar className="gc-contacts__user--image" alt={ name } src={ src } />
         }}
@@ -101,22 +96,27 @@ const Contacts: React.FunctionComponent<IContactsProps> = ({ isOpen, contact, ha
             <CloseIcon />
           </IconButton>
         </div>
-        <ContactNavigation
-          activeTab={ activeTab }
-          setActiveTab={ handleActiveTab }
-          disabledPendingTab={ pending.length < 1 }
-        />
         {
-          (
-            (activeTab === 'accepts' && accepted.length) ||
-            (activeTab === 'pending' && pending.length)
-          ) &&
-          <ContactSearch searchTerm={ searchTerm } setSearchTerm={ setSearchTerm } />
+          !loadingContacts &&
+          <React.Fragment>
+            <ContactNavigation
+              activeTab={ activeTab }
+              setActiveTab={ handleActiveTab }
+              disabledPendingTab={ pending.length < 1 }
+            />
+            {
+              (
+                (activeTab === 'accepts' && accepted.length) ||
+                (activeTab === 'pending' && pending.length)
+              ) &&
+              <ContactSearch searchTerm={ searchTerm } setSearchTerm={ setSearchTerm } />
+            }
+          </React.Fragment>
         }
         <div className="gc-contacts__content">
           {
             loadingContacts ?
-            renderLoader :
+            <ContactPlaceholder number={ 3 } /> :
             renderContacts(activeTab === 'accepts' ? accepted : pending)
           }
         </div>

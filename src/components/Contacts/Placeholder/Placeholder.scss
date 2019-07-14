@@ -1,0 +1,47 @@
+
+@import '../../../assets/scss/settings/_config-base';
+
+@keyframes shimmer {
+  0% { background-position: -468px 0 }
+  100%{ background-position: 468px 0 }
+}
+
+.gc-contacts-placeholder {
+  &__item {
+    @include rem(margin-bottom, 10px);
+    @include rem(height, 50px);
+    display: flex;
+    align-items: center;
+  }
+
+  &__wrap {
+    @include rem(height, 20px);
+    width: 100%;
+  }
+
+  &__animate {
+    position: relative;
+    height: 100%;
+    animation: shimmer 1s linear infinite forwards;
+    background: #f6f7f8;
+    background: linear-gradient(
+      to right,
+      #eeeeee 8%,
+      #dddddd 18%,
+      #eeeeee 33%,
+    );
+    background-size: 800px 104px;
+
+    &.image {
+      @include rem(margin-right, 10px);
+      @include rem(height, 40px);
+      @include rem(width, 40px);
+      border-radius: 50%;
+      flex: 1 0 auto;
+    }
+
+    &.name {
+      @include rem(border-radius, 3px);
+    }
+  }
+}
