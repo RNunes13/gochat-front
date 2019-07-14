@@ -2,8 +2,7 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import qs from 'querystring';
-import Auth from '../../../../services/auth';
-import User from '../../../../services/user';
+import { Auth, User } from '../../../../services';
 import { User as UserModel } from '../../../../models';
 import { Input, Button } from '../../../index';
 import { HandlerError } from '../../../../utils';
@@ -30,6 +29,7 @@ import * as AuthActions from '../../../../store/auth/actions';
 interface PropsType extends RouteComponentProps {
   updateUser: typeof AuthActions.updateUser;
   handleSignUp(): void;
+  onSuccess(user: User): void;
 };
 
 type FormType = {
@@ -39,7 +39,7 @@ type FormType = {
   password: string;
 };
 
-const SignUpForm: React.FunctionComponent<PropsType> = ({ handleSignUp, history, updateUser }) => {
+const SignUpForm: React.FunctionComponent<PropsType> = ({ handleSignUp, history, updateUser, onSuccess }) => {
   const [ showTooltip, handleTooltipState ] = React.useState<boolean>(false);
   const [ showPassword, setShowPassword ] = React.useState<boolean>(false);
   const [ usernameInvalid, setUsernameInvalid ] = React.useState<boolean>(false);
@@ -123,6 +123,7 @@ const SignUpForm: React.FunctionComponent<PropsType> = ({ handleSignUp, history,
     Auth.signUp(name, username, email, password)
       .then((user: UserModel) => {
         updateUser(user);
+        onSuccess(user);
         
         openSnackbar({
           message: 'Cadastro realizado com sucesso! Seja bem-vindo.',

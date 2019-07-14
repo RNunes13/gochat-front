@@ -1,0 +1,88 @@
+
+@import '../../assets/scss/settings/_config-base';
+
+.gc-contacts {
+  @include flex-centered;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: z('contacts-modal');
+  
+  @include mq('mui-sm') {
+    top: $navbar-height-desktop;
+    height: calc(100vh - #{$navbar-height-desktop});
+  }
+
+  @include mq('mui-sm', max) {
+    top: $navbar-height-mobile;
+    height: calc(100vh - #{$navbar-height-mobile});
+  }
+
+  &__backdrop {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba($color-black, 0.6);
+  }
+
+  &__wrap {
+    @include rem(padding, 20px);
+    @include rem(max-width, 500px);
+    @include rem(border-radius, 4px);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 80%;
+    background-color: $color-white;
+    box-shadow: 0 0 10px -2px $color-night-rider;
+    z-index: z('contacts-modal');
+
+    @include mq('mui-sm', max) {
+      @include rem(padding, 15px);
+      width: 90%;
+    }
+  }
+
+  &__heading {
+    @include rem(margin-bottom, 10px);
+    @include flex-spaced;
+
+    &--title {
+      @include rem(font-size, 25px !important);
+      @include font-weight(500 !important);
+
+      @include mq('mui-sm', max) {
+        @include rem(font-size, 20px !important);
+      }
+    }
+  }
+
+  &__search {
+    @include rem(margin-bottom, 20px);
+  }
+
+  &__content {
+    @include scrollbar(8px, $color-secondary);
+    @include rem(padding-right, 15px);
+    overflow-y: auto;
+  }
+
+  &__user {
+    @include rem(margin-bottom, 10px);
+    @include rem(padding, 5px);
+    @include rem(border-radius, 4px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 150ms $transition-function;
+
+    @include hover-supported() {
+      background-color: lighten($color-secondary, 55%);
+    }
+
+    &--image {
+      @include rem(margin-right, 10px);
+    }
+  }
+}

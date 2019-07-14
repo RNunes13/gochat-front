@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import qs from 'querystring';
-import Auth from '../../../../services/auth';
+import { Auth } from '../../../../services';
 import { User } from '../../../../models';
 import { Input, Button } from '../../../index';
 import { HandlerError } from '../../../../utils';
@@ -32,6 +32,7 @@ import {
 
 interface LoginFormProps extends RouteComponentProps {
   updateUser: typeof AuthActions.updateUser;
+  onSuccess(user: User): void;
 }
 
 type FormType = {
@@ -39,7 +40,7 @@ type FormType = {
   password: string;
 };
 
-const LoginForm: React.FunctionComponent<LoginFormProps> = ({ updateUser, history }) => {
+const LoginForm: React.FunctionComponent<LoginFormProps> = ({ updateUser, onSuccess, history }) => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const initialValues: FormType = {
@@ -59,6 +60,7 @@ const LoginForm: React.FunctionComponent<LoginFormProps> = ({ updateUser, histor
     Auth.login(values.username, values.password)
       .then((user: User) => {
         updateUser(user);
+        onSuccess(user);
         
         openSnackbar({
           message: 'Login aceito',

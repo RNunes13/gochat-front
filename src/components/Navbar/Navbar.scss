@@ -2,11 +2,13 @@
 @import '../../assets/scss/settings/_config-base';
 
 .gc-navbar {
-  @include breakpoint(min-width, 600px) {
+  z-index: z('navbar') !important;
+
+  @include mq('mui-sm') {
     height: $navbar-height-desktop;
   }
 
-  @include breakpoint(max-width, 599px) {
+  @include mq('mui-sm', max) {
     height: $navbar-height-mobile;
   }
 

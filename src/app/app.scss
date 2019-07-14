@@ -11,12 +11,12 @@
   @include rem(padding-bottom, 30px);
   overflow-y: auto;
 
-  @include breakpoint(min-width, 600px) {
+  @include mq('mui-sm') {
     height: calc(100vh - #{$navbar-height-desktop});
     margin-top: $navbar-height-desktop;
   }
 
-  @include breakpoint(max-width, 599px) {
+  @include mq('mui-sm', max) {
     @include rem(padding-top, 20px);
     @include rem(padding-bottom, 20px);
     height: calc(100vh - #{$navbar-height-mobile});

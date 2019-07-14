@@ -4,4 +4,15 @@
 .gc-rooms {
   &__container {
   }
+
+  .gc-single-button {
+    @include rem(bottom, 20px);
+    @include rem(right, 20px);
+    position: fixed;
+
+    @include mq('sm', max) {
+      @include rem(bottom, 10px);
+      @include rem(right, 10px);
+    }
+  }
 }

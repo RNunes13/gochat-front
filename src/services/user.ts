@@ -1,5 +1,8 @@
 
 import HttpClient from './httpClient';
+import { User, Contact } from '../models';
+import { HandlerError } from '../utils';
+import { openSnackbar } from '../components/Notifier/Notifier';
 
 export default class Auth {
   private static http = new HttpClient({ baseUrl: `${process.env.API_URL}/api` });
@@ -17,6 +20,24 @@ export default class Auth {
       } catch (exception) {
         reject(exception);
       }
+    });
+  }
+
+  public static getUserContacts(user: User, callback: (contacts: Contact[]) => void) {
+    this.http.get(`/users/${user.id}/contacts_info`)
+    .then((res) => {
+      const { data } = res;
+
+      callback(data.data);
+    })
+    .catch((err) => {
+      callback([]);
+
+      openSnackbar({
+        message: HandlerError.getErrorMessage(err),
+        variant: 'error',
+        delay: 10000,
+      });
     });
   }
 }

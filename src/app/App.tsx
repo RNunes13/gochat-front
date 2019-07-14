@@ -1,8 +1,9 @@
 
 import React from 'react';
 import theme from '../config/theme';
-import Auth from '../services/auth';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { Auth, User as UserService } from '../services';
+import { User } from '../models';
 import { MainRouter } from './Routes';
 import { Loader, Notifier, Navbar } from '../components';
 import { BrowserRouter as Router} from 'react-router-dom';
@@ -14,14 +15,19 @@ import { connect } from 'react-redux';
 import { AppState } from '../store';
 import { AuthState } from '../store/auth/types';
 import { GlobalState } from '../store/global/types';
+import { ContactState } from '../store/contact/types';
 import * as AuthActions from '../store/auth/actions';
 import * as GlobalActions from '../store/global/actions';
+import * as ContactActions from '../store/contact/actions';
 
 interface AppProps {
+  updateLoadingContacts: typeof ContactActions.updateLoadingContacts;
   updateLoadingPage: typeof GlobalActions.updateLoadingPage;
+  updateContacts: typeof ContactActions.updateContacts;
   updateUser: typeof AuthActions.updateUser;
   auth: AuthState;
   global: GlobalState;
+  contact: ContactState;
 }
 
 class App extends React.Component<AppProps> {
@@ -29,6 +35,17 @@ class App extends React.Component<AppProps> {
     Auth.checkUserLogged((user) => {
       this.props.updateUser(user);
       this.props.updateLoadingPage(false);
+
+      if (user) this.getUserContacts(user);
+    });
+  }
+
+  getUserContacts(user: User) {
+    this.props.updateLoadingContacts(true);
+
+    UserService.getUserContacts(user, (contacts) => {
+      this.props.updateContacts(contacts);
+      this.props.updateLoadingContacts(false);
     });
   }
 
@@ -58,10 +75,12 @@ class App extends React.Component<AppProps> {
 const mapStateToProps = (state: AppState) => ({
   auth: state.auth,
   global: state.global,
+  contact: state.contact,
 });
 
 const mapDispatchToProps = (dispatch: Redux.Dispatch) =>
   bindActionCreators({
+    ...ContactActions,
     ...GlobalActions,
     ...AuthActions,
   }, dispatch);

@@ -6,6 +6,10 @@ $screen-sm : 576px !default;
 $screen-md : 768px !default;
 $screen-lg : 992px !default;
 $screen-xl : 1200px !default;
+$screen-mui-sm : 600px !default;
+$screen-mui-md : 960px !default;
+$screen-mui-lg : 1280px !default;
+$screen-mui-xl : 1920px !default;
 
 /**
  * Breakpoints - Media Queries
@@ -15,5 +19,9 @@ $breakpoints: (
   'sm': $screen-sm,
   'md': $screen-md,
   'lg': $screen-lg,
-  'xl': $screen-xl
+  'xl': $screen-xl,
+  'mui-sm': $screen-mui-sm,
+  'mui-md': $screen-mui-md,
+  'mui-lg': $screen-mui-lg,
+  'mui-xl': $screen-mui-xl,
 );

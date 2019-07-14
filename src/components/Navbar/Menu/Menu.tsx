@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import Auth from '../../../services/auth';
+import { Auth } from '../../../services';
 import ProgressiveImage from 'react-progressive-image';
 import { openSnackbar } from '../../Notifier/Notifier';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -22,16 +22,18 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../store';
 import { AuthState } from '../../../store/auth/types';
 import * as AuthActions from '../../../store/auth/actions';
+import * as ContactActions from '../../../store/contact/actions';
 
 interface PropsType extends RouteComponentProps {
   auth: AuthState;
   updateUser: typeof AuthActions.updateUser;
+  updateContacts: typeof ContactActions.updateContacts;
 }
 
-const Menu: React.FunctionComponent<PropsType> = ({ auth, updateUser, history }) => {
+const Menu: React.FunctionComponent<PropsType> = ({ auth, updateUser, updateContacts, history }) => {
   const [menu, setMenu] = React.useState<HTMLElement | null>(null);
   
-  const { name } = auth.user!;
+  const { name, image_url } = auth.user!;
 
   const handleMenu = (event: React.MouseEvent) => setMenu(event.currentTarget as HTMLElement);
 
@@ -46,6 +48,7 @@ const Menu: React.FunctionComponent<PropsType> = ({ auth, updateUser, history })
     Auth.logout((successful) => {
       if (successful) {
         updateUser(null);
+        updateContacts([]);
         redirect('/login');
       } else {
         openSnackbar({
@@ -59,7 +62,7 @@ const Menu: React.FunctionComponent<PropsType> = ({ auth, updateUser, history })
 
   const renderAvatar = (
     <ProgressiveImage 
-      src={ require('../../../assets/images/placeholder.png') }
+      src={ image_url || require('../../../assets/images/placeholder.png') }
       placeholder=""
     >
       {(src: string, loading: boolean) => {
@@ -84,6 +87,7 @@ const Menu: React.FunctionComponent<PropsType> = ({ auth, updateUser, history })
       <MenuUI
         id="menu-appbar"
         anchorEl={ menu }
+        style={{ zIndex: 5003 }}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
@@ -117,6 +121,7 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: Redux.Dispatch) =>
   bindActionCreators({
     ...AuthActions,
+    ...ContactActions,
   }, dispatch);
 
 export default connect(

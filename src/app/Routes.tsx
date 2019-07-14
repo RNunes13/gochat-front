@@ -1,8 +1,8 @@
 
 import * as React from 'react';
 import qs from 'querystring';
-import Auth from '../services/auth';
 import Loadable from 'react-loadable';
+import { Auth } from '../services';
 import { Loader } from '../components';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
