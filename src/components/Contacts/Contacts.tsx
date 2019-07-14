@@ -1,6 +1,8 @@
 
 import * as React from 'react';
+import ContactSearch from './Search/Search';
 import ProgressiveImage from 'react-progressive-image';
+import ContactNavigation, { TabsType } from './Navigation/Navigation';
 import { RemoveSpecialCharacters } from '../../utils';
 import { Contact } from '../../models';
 import './Contacts.scss';
@@ -10,10 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import CloseIcon from '@material-ui/icons/ClearRounded';
-import CancelIcon from '@material-ui/icons/CancelRounded';
 
 // Redux
 import { connect } from 'react-redux';
@@ -30,19 +29,16 @@ const Contacts: React.FunctionComponent<IContactsProps> = ({ isOpen, contact, ha
   if (!isOpen) return null;
 
   const [searchTerm, setSearchTerm] = React.useState<string>('');
+  const [activeTab, setActiveTab] = React.useState<TabsType>('accepts');
 
   const { contacts, loadingContacts } = contact;
+  const accepted = contacts.filter(c => c.status === 'accept');
+  const pending = contacts.filter(c => c.status === 'pending');
 
   const renderLoader = (
     <div style={{ textAlign: 'center' }}>
       <CircularProgress size={ 30 } />
     </div>
-  );
-
-  const renderEmpty = (
-    <p>
-      Você ainda não tem contatos
-    </p>
   );
 
   const renderAvatar = (contact: Contact) => {
@@ -60,8 +56,8 @@ const Contacts: React.FunctionComponent<IContactsProps> = ({ isOpen, contact, ha
     );
   };
 
-  const renderContacts = () => {
-    const filteredContacts = contacts
+  const renderContacts = (items: Contact[]) => {
+    const filteredContacts = items
       .filter((contact) => {
         if (!searchTerm) return contact;
 
@@ -71,11 +67,13 @@ const Contacts: React.FunctionComponent<IContactsProps> = ({ isOpen, contact, ha
         return contactNameFormatted.match(searchTermFormatted) !== null;
       });
 
+    if (!filteredContacts.length && searchTerm) return <span>Não há contatos com este nome.</span>
+
+    if (!filteredContacts.length) return <span>Você ainda não tem contatos.</span>
+
     return (
       <ul className="gc-contacts__users">
         {
-          !filteredContacts.length ?
-          'Não há contatos com este nome' :
           filteredContacts
           .map(contact =>
             <li key={ contact.id } className="gc-contacts__user">
@@ -88,6 +86,11 @@ const Contacts: React.FunctionComponent<IContactsProps> = ({ isOpen, contact, ha
     );
   };
 
+  const handleActiveTab = (value: TabsType) => {
+    setActiveTab(value);
+    setSearchTerm('');
+  };
+
   return (
     <section className="gc-contacts">
       <div className="gc-contacts__backdrop" onClick={ () => handlerModal(false) } />
@@ -98,37 +101,23 @@ const Contacts: React.FunctionComponent<IContactsProps> = ({ isOpen, contact, ha
             <CloseIcon />
           </IconButton>
         </div>
-        <div className="gc-contacts__search">
-          <TextField
-            color="primary"
-            id="search-contacts"
-            value={ searchTerm }
-            label="Buscar contatos"
-            className="gc-contacts__search--input"
-            onChange={ e => setSearchTerm(e.currentTarget.value) }
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    edge="end"
-                    size="small"
-                    onClick={ () => setSearchTerm('') }
-                  >
-                    { searchTerm && <CancelIcon fontSize="small" /> }
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            fullWidth
-          />
-        </div>
+        <ContactNavigation
+          activeTab={ activeTab }
+          setActiveTab={ handleActiveTab }
+          disabledPendingTab={ pending.length < 1 }
+        />
+        {
+          (
+            (activeTab === 'accepts' && accepted.length) ||
+            (activeTab === 'pending' && pending.length)
+          ) &&
+          <ContactSearch searchTerm={ searchTerm } setSearchTerm={ setSearchTerm } />
+        }
         <div className="gc-contacts__content">
           {
             loadingContacts ?
             renderLoader :
-            !contacts.length ?
-            renderEmpty :
-            renderContacts()
+            renderContacts(activeTab === 'accepts' ? accepted : pending)
           }
         </div>
       </div>

@@ -2,6 +2,7 @@
 export interface Contact {
   id: number;
   name: string;
+  status: 'accept' | 'pending' | 'reject';
   username: string;
   image_url: string | null;
 }

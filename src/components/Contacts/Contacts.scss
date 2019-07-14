@@ -58,6 +58,16 @@
     }
   }
 
+  &__navigation {
+    @include rem(margin-bottom, 10px);
+
+    &--item {
+      &:disabled {
+        opacity: 0.3;
+      }
+    }
+  }
+
   &__search {
     @include rem(margin-bottom, 20px);
   }
