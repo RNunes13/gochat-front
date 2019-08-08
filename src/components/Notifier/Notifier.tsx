@@ -144,6 +144,7 @@ export default class Notifier extends React.Component<NotifierProps, NotifierSta
         onClose={ this.handleSnackbarClose }
         onExited={ this.handleExited }
         open={ open }
+        style={{ zIndex: 6000 }}
         ContentProps={{ 'aria-describedby': 'snackbar-message-id' }}
       >
       { snackbarContent }

@@ -1,10 +1,10 @@
 
 import HttpClient from './httpClient';
-import { User, Contact } from '../models';
+import { User as UserModel, Contact } from '../models';
 import { HandlerError } from '../utils';
 import { openSnackbar } from '../components/Notifier/Notifier';
 
-export default class Auth {
+export default class Useras {
   private static http = new HttpClient({ baseUrl: `${process.env.API_URL}/api` });
   
   public static checkUsernameAvailability(username: string): Promise<boolean> {
@@ -23,7 +23,7 @@ export default class Auth {
     });
   }
 
-  public static getUserContacts(user: User, callback: (contacts: Contact[]) => void) {
+  public static getUserContacts(user: UserModel, callback: (contacts: Contact[]) => void) {
     this.http.get(`/users/${user.id}/contacts_info`)
     .then((res) => {
       const { data } = res;

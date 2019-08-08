@@ -78,6 +78,37 @@
     overflow-y: auto;
   }
 
+  &__users {
+    &--add {
+      @include rem(margin-bottom, 10px);
+      @include rem(padding, 5px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background-color 150ms $transition-function;
+  
+      @include hover-supported() {
+        background-color: lighten($color-secondary, 55%);
+      }
+
+      .icon {
+        @include rem(margin-right, 10px);
+        @include rem(width, 40px);
+        @include rem(height, 40px);
+        @include flex-centered;
+        color: $color-white;
+        border-radius: 50%;
+        background-color: $color-primary;
+      }
+
+      .text {
+        @include rem(font-size, 15px);
+        @include font-weight(medium);
+        color: $color-bunting;
+      }
+    }
+  }
+
   &__user {
     @include rem(margin-bottom, 10px);
     @include rem(padding, 5px);
@@ -93,6 +124,55 @@
 
     &--image {
       @include rem(margin-right, 10px);
+    }
+
+    &--name {
+      @include rem(font-size, 15px);
+      @include font-weight(medium);
+      color: $color-bunting;
+    }
+  }
+
+  &__form {
+    .buttons {
+      @include rem(margin-top, 10px);
+      @include flex-centered;
+      flex-direction: column;
+
+      button {
+        @include rem(margin, 5px);
+      }
+    }
+  }
+
+  &__alert {
+    @include rem(margin-bottom, 10px);
+    @include rem(padding, 15px);
+    @include rem(border-radius, 5px);
+    position: relative;
+    border: 1px solid transparent;
+
+    .close {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      color: inherit;
+
+      svg {
+        @include rem(font-size, 20px);
+      }
+    }
+
+    .content {
+      @include rem(padding-right, 25px);
+      @include rem(font-size, 15px);
+      margin: 0;
+    }
+
+    &.success {
+      color: $color-crusoe;
+      background-color: $color-swans-down;
+      border-color: darken($color-swans-down, 5%);
     }
   }
 }
